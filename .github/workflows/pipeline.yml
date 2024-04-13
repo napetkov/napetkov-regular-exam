@@ -25,7 +25,7 @@ jobs:
     - name: Display my Softuni Username
       run: echo "napetkov"
   
-  run-ui-tests:
+  build-run-ui-tests:
     needs: build-unit-tests
     runs-on: ubuntu-latest
 
@@ -45,3 +45,15 @@ jobs:
       run: npm start &
     - name: Run the UI tests
       run: npm run test:ui
+
+  deploy-production:
+    needs: build-run-ui-tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy to production
+      uses: JorgeLNJunior/render-deploy@v1.4.4
+      with:
+        service_id: ${{ secrets.MY_RENDER_SERVICE_ID }}
+        api_key: ${{ secrets.MY_RENDER_API_KEY }}
+        wait_deploy: true
