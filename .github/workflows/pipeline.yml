@@ -24,3 +24,24 @@ jobs:
       run: npm run test:unit
     - name: Display my Softuni Username
       run: echo "napetkov"
+  
+  run-ui-tests:
+    needs: build-unit-tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository 
+      uses: actions/checkout@v4
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+        cache: 'npm'
+    - name: Install NPM dependancies
+      run: npm install
+    - name: Install NPX Playwright browsers
+      run: npx playwright install
+    - name: Start Application
+      run: npm start &
+    - name: Run the UI tests
+      run: npm run test:ui
